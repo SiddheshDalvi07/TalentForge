@@ -1,0 +1,66 @@
+
+
+{% block content %}
+{% load static %}
+<style>
+  .jobs-single{
+    background-color:white;
+   width: 62%;
+   margin: auto;
+    max-width:90%; 
+    border: 1.5px solid #FFC107;
+    box-shadow: 0 10px 10px rgba(36, 95, 221, 0.5);
+   
+  }
+ 
+  .info{
+    background-color: white;
+    color: #343A40;
+   
+   
+  }
+  .list-group-item {
+    color: #343A40;
+  }
+  .card-body .list-group-item a {
+    color: #0056B3; /* Dark Blue */
+    text-decoration: none;
+  }
+
+  .card-body .list-group-item a:hover {
+    color: #FFC107; /* Yellow */
+    text-decoration: underline;
+  }
+</style>
+
+
+{% for job in jobs %}
+
+
+
+<div class="card mt-3 mb-3 p-4  jobs-single">
+    <div class="row">
+      <div class="col-md-4 info">
+        <img src="{{request.user.logo.url}}" class="img-fluid rounded-start info" alt="OOPS">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body info">
+          <!-- <h5 class="card-title"><a href="{% url 'job_description' job.id %}">{{job.role}}</a></h5> -->
+          <ul class="list-group list-group-flush info">
+            <li class="list-group-item info"><a href="{% url 'ejobdescription' job.id %}"><h5>{{job.role}}</h5></a></li>
+            <li class="list-group-item info"><strong>Company: </strong>{{job.organization}}</li>
+            <li class="list-group-item info"><strong>Location: </strong>{{job.location}}</li>
+            <li class="list-group-item info"><strong>Salary: </strong>{{job.salary}}</li>
+            <li class="list-group-item info"><strong>Job Type: </strong>{{job.job_type}}</li>
+            <li class="list-group-item info"><small>{{job.created | timesince }}  ago</small></li>
+            
+          </ul>
+          <!-- <p class="card-text">{{job.job_type}}</p> -->
+          <!-- <p class="card-text"><small class="text-body-secondary">{{job.created | timesince }}  ago</small></p> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endfor %}
+  {% endblock %}

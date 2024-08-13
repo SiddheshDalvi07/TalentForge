@@ -1,0 +1,325 @@
+{% extends 'emain.html' %}
+
+{% block title %}
+Contact
+{% endblock %}
+
+{% block content %}
+{% load static %}
+<style>
+  .contact-section {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+      background-color: #343A40;
+    }
+
+    .contact-image {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      border: 1px solid #FFC107;
+    }
+
+    .contact-form {
+      
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      background-color: #b5b7b9;
+    }
+
+    .contact-form textarea {
+      width: 100%;
+      height: 150px;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      resize: none;
+    }
+
+    .contact-form button {
+      margin-top: 10px;
+    }
+
+  .faq-item {
+    margin: 2rem 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 1rem;
+    background-color: #b5b7b9;
+    overflow: hidden;
+    transition: height 0.3s ease;
+  }
+
+  .faq-item.expanded {
+    height: auto;
+  }
+
+  .question-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    color: #343A40;
+  }
+
+  .answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease, padding-top 0.3s ease;
+    padding-top: 0;
+  }
+
+  .answer.expanded {
+    max-height: 1000px;
+    
+  }
+
+  .arrow {
+    font-size: 1.25rem;
+    cursor: pointer;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: auto;
+   
+  }
+  @keyframes flashAndZoom {
+    0% {
+        color: #0056B3; /* Initial color */
+        transform: scale(0.8); /* Initial size */
+    }
+    50% {
+        color: #FFC107; /* Midway color */
+        transform: scale(1); /* Zoomed in size */
+    }
+    100% {
+        color: #0056B3; /* Final color */
+        transform: scale(0.8); /* Back to initial size */
+    }
+}
+
+.flashing-header {
+    animation: flashAndZoom 1s infinite; /* Animation lasting 1 second, repeating infinitely */
+    display: inline-block; /* To ensure transform works correctly */
+}
+.latest_jobs{
+    text-align: center;
+
+}
+</style>
+{% if messages %}
+{% for message in messages %}
+
+    
+<div class="alert alert-primary d-flex align-items-center justify-content-between mt-2 " role="alert">
+  <div class="d-flex align-items-center">
+    
+    
+      <div>
+          {{ message }}
+      </div>
+  </div>
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+
+
+
+{% endfor %}
+{% endif %}
+
+<div class="container ">
+  <div class="row contact-section">
+    <div class=" latest_jobs">
+      <h1 class="mt-4 mb-4 flashing-header">Enter Your Query Here</h1>
+      </div>
+  
+   
+    <div class="col-md-5 mt-5 mb-5 ms-2">
+      <img class="contact-image" src="{% static 'images/call-center4.png' %}" alt="Contact Image">
+    </div>
+  
+
+ 
+
+  <div class="col-md-6 contact-form me-4">
+      
+    <form id="myForm" action="" method="POST">
+      {% csrf_token %}
+      <h3 class="mb-4">Enter Your Query Here</h3>
+      <textarea class="form-control mb-3" name="query" id="query" cols="30" rows="10" placeholder="Enter your query here"></textarea>
+      <button class="btn btn-primary" type="submit">Submit</button>
+      
+    </form>
+  </div>
+  
+
+
+
+   
+  </div>
+  <!-- <div class="row">
+    <div class="col-md-5">
+      <img class="contact" src="{% static 'images/calling.jpg' %}" alt="Contact Image">
+    </div>
+
+    <div class="col-md-6 ml-md-auto contactform">
+      <form action="" method="POST">
+        {% csrf_token %}
+        <h3 class="mb-4">Enter Your Query Here</h3>
+        <textarea class="form-control mb-3" name="query" id="query" cols="30" rows="10"></textarea>
+        <button class="btn btn-primary" type="submit">Submit</button>
+      </form>
+    </div>
+  </div> -->
+  
+  <hr class="mt-5">
+  <div class=" latest_jobs">
+    <h1 id="faq-header"  class="flashing-header" >Frequently Asked Questions</h1>
+  </div>
+  
+  
+  <div class="faq-item">
+    <div class="question-container" onclick="toggleAnswer(this)">
+      <div class="question">Question 1: How do I post a job listing on Talent Trove?</div>
+      <i class="bi bi-chevron-down arrow"></i>
+    </div>
+    
+    <div class="answer">Posting a job listing on Talent Trove is simple. 
+      First, log in to your employer account. Navigate to the 'Post a Job' section, 
+      fill out the required details such as job title, description, requirements,
+      and location, then click 'Submit'. Your job listing will be reviewed and 
+      published on the platform, making it visible to potential candidates.</div>
+  </div>
+
+
+  <div class="faq-item">
+    <div class="question-container" onclick="toggleAnswer(this)">
+      <div class="question">Question 2: How can I manage the applications I receive for my job postings?</div>
+      <i class="bi bi-chevron-down arrow"></i>
+    </div>
+    <div class="answer">To manage applications, log in to your Talent Trove employer
+       account and go to the 'Profile' section. Here, you will find a list of all
+        your posted jobs. Click on the name of the candidate to view the applications.
+        </div>
+  </div>
+
+  <div class="faq-item">
+    <div class="question-container" onclick="toggleAnswer(this)">
+      <div class="question">Question 3: What should I do if I encounter technical issues while using Talent Trove?</div>
+      <i class="bi bi-chevron-down arrow"></i>
+    </div>
+    <div class="answer">If you experience any technical issues while using Talent Trove,
+       please contact our support team for assistance. You can reach out via the 'Contact Us' section 
+       in your Menu, or email us at talenttrove@gmail.com. Provide a detailed description of the issue,
+        and our team will respond promptly to help resolve it. </div>
+  </div>
+</div>
+
+<script>
+  function toggleAnswer(element) {
+    const answer = element.nextElementSibling;
+    const arrow = element.querySelector('.arrow');
+
+    if (answer.style.height && answer.style.height !== '0px') {
+      answer.style.height = '0';
+      answer.classList.remove('expanded');
+      arrow.classList.remove('bi-chevron-up');
+      arrow.classList.add('bi-chevron-down');
+    } else {
+      answer.style.height = answer.scrollHeight + 'px';
+      answer.classList.add('expanded');
+      arrow.classList.remove('bi-chevron-down');
+      arrow.classList.add('bi-chevron-up');
+    }
+  }
+  
+
+
+  
+
+  
+
+</script>
+
+
+
+
+
+
+
+<!-- <style>
+    
+         .contact{
+            width: 90%;
+            height: 40rem;
+        } 
+        .contactform{
+            display: flex;
+            align-items: center;
+        }
+        
+
+    .faq-item {
+      margin-bottom: 20px;
+    }
+    .question {
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .answer {
+      display: none;
+    }
+
+</style>
+
+<div class="col-md-5">
+    <img  class="contact" src="{% static 'images/calling.jpg' %}" alt="">
+</div>
+
+<div class="col-md-6 ms-5  contactform">
+
+   <form class="ms-5" action="" method="POST">
+    {% csrf_token %}
+   
+    <h3 class="mb-4">Enter Your Query Here</h3>
+    <textarea class="form-control mb-3" name="" id="" cols="100" rows="10"></textarea>
+    <button class="btn btn-primary ms-5" type="submit">Submit</button>
+    
+   </form>
+</div>
+<hr class="mt-5">
+
+<h1 id="amaan">sign</h1>
+
+<div>
+    <h1 id="try">Tryll</h1>
+    <p id="ans">Lorem Ipsum is simply dummy text of the printing and typesetting industry</p>
+</div>
+
+ 
+  
+  <div class="faq-item">
+    <div class="question">Question 1: What is Lorem Ipsum?</div>
+    <div class="answer">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</div>
+  </div>
+  
+  <div class="faq-item">
+    <div class="question">Question 2: Why do we use it?</div>
+    <div class="answer">It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.</div>
+  </div>
+  
+  <div class="faq-item">
+    <div class="question">Question 3: Where does it come from?</div>
+    <div class="answer">Contrary to popular belief, Lorem Ipsum is not simply random text.</div>
+  </div> -->
+
+
+
+{% endblock %}

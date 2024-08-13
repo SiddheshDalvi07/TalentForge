@@ -1,0 +1,238 @@
+
+
+
+
+
+{% extends 'main.html' %}
+
+{% block title %}
+Chat
+{% endblock %}
+{% load static %}
+{% block content %}
+
+<style>
+    .card {
+    width: 600px;
+    margin: 20px auto;
+    border: 1px solid #ced4da; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+}
+
+.card-body {
+    border: 1px solid #ced4da; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+     padding: 30px;  
+    overflow-y: auto; /* Add vertical scroll when content exceeds height */
+    max-height: 500px; /* Set maximum height for scrollable area */
+}
+
+.chat_background {
+    background-color: #d6d3d3; /* Light Grey */
+}
+
+.message-body {
+    border: 1px solid #ced4da; /* Border color */
+    border-radius: 5px; /* Rounded corners */
+    padding: 10px;
+    max-height: 300px;
+    margin-left: 50px;
+    background-color: #E0F7FA; /* Light Blue for sent messages */
+    color: #0056B3; /* Dark Blue text color */
+}
+
+.message-form {
+    /* margin-top: 20px; */
+    margin-bottom: 5px;
+    display: flex; /* Use flexbox layout */
+    align-items: center; /* Center align items vertically */
+    background-color: #d6d3d3;
+}
+
+.message-input {
+    flex: 1; /* Take remaining space */
+    width: calc(100% - 80px); /* Adjust for button width */
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    outline: none;
+    font-size: 16px;
+    background-color: #F8F9FA; /* Light Grey */
+    margin: 10px;
+}
+
+.message-input:focus {
+    border-color: #6cb2eb; /* Highlight border color on focus */
+}
+
+.message-submit {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color:#FFC107; /* Dark Blue color for button */
+    color: #fff; /* White text color */
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.message-submit:hover {
+    background-color: #007bff; /* Light Blue color on hover */
+}
+    .info{
+    background-color: white;
+  }
+  .tables{
+    background-color: #0056B3;
+  }
+  .custom-table {
+            background-color: #0056B3;
+            border-collapse: collapse;
+            width: 100%;
+            text-align: center;
+            transition: transform 0.6s ease-in-out;
+        }
+        .custom-table:hover {
+    transform: scale(1.1); /* Zoom in effect on hover */
+}
+        
+        .custom-table th,
+        .custom-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .custom-table th {
+            background-color: #0056B3;
+            color: #fff;
+        }
+        .overview{
+          text-align: center;
+        }
+          .contact{
+            color: white;
+            text-decoration: none;
+          }
+          @keyframes flashAndZoom {
+    0% {
+        color: #0056B3; /* Initial color */
+        transform: scale(1); /* Initial size */
+    }
+    50% {
+        color: #FFC107; /* Midway color */
+        transform: scale(1.5); /* Zoomed in size */
+    }
+    100% {
+        color: #0056B3; /* Final color */
+        transform: scale(1); /* Back to initial size */
+    }
+}
+
+.flashing-header {
+    animation: flashAndZoom 1s infinite; /* Animation lasting 1 second, repeating infinitely */
+    display: inline-block; /* To ensure transform works correctly */
+}
+.latest_jobs{
+    text-align: center;
+
+}
+
+
+.full_filter{
+    background-color: #d6d3d3;
+        height: fit-content;
+        border: 2px solid #FFC107;
+        box-shadow: 0 10px 10px rgba(36, 95, 221, 0.5);
+       
+    }
+    .interactions{
+    color: #0056B3;
+}
+</style>
+
+<div class="container">
+    <div class="latest_jobs">
+        <h1 class="mt-4 mb-4 flashing-header">Chat</h1>
+        </div>
+    
+
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="card full_filter">
+                <div class="latest_jobs">
+                    <h1 class="mt-4 mb-4 interactions">Interactions</h1>
+                    </div>
+                <div class="card-body chat_background" id="message-container">
+                    {% for message in room_messages %}
+                        <div class="message mb-4">
+                            <div class="message-header">
+                                <img src="{{ message.user.avatar.url }}" class="avatar mr-2 rounded-circle" alt="User Avatar" style="width: 40px; height: 40px;">
+                                <span class="font-weight-bold" style="font-size: 16px;">{{ message.user.name }}</span>
+                                <span class="text-muted ml-2 small">{{ message.created|timesince }} ago</span>
+                            </div>
+                            <div class="message-body">
+                                <p class="mb-0" style="font-size: 16px;">{{ message.body }}</p>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                </div>
+                <hr>
+                <form action="" method="POST" class="message-form">
+                    {% csrf_token %}
+                    <input name="body" class="message-input" placeholder="Write your message here..." required />
+                    <button type="submit" class="me-2 message-submit">Send</button>
+                </form>
+            </div>
+            
+        </div>
+
+        <div class="col-md-4">
+            <table class="custom-table">
+                <thead>
+                    <tr >
+                        <th style="text-align: center;" colspan="2">Company Overview</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="info">
+                        <td>Name</td>
+                        <td>{{ room.employer.name }}</td>
+                    </tr>
+                    <tr class="info">
+                        <td>Organization:</td>
+                        <td>{{ room.employer.organization }}</td>
+                    </tr>
+                    <tr class="info">
+                        <td>Email:</td>
+                        <td>{{ room.employer.email }}</td>
+                    </tr>
+                    <tr class="info">
+                        <td>Location:</td>
+                        <td>{{ room.employer.location }}</td>
+                    </tr>
+                    
+                   
+                    
+                </tbody>
+            </table>
+         
+        </div>
+
+
+
+
+    </div>
+</div> 
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/index.js' %}"></script>
+{% endblock %}
+
+   
+
+
+
